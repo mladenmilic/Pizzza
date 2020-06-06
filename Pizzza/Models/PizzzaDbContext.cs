@@ -14,6 +14,7 @@ namespace Pizzza.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Pizza> Pizzas { get; set; }
+        public DbSet<PizzaComponents> PizzaComponents { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Place> Places { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -23,6 +24,9 @@ namespace Pizzza.Models
         {
             modelBuilder.Entity<OrderItem>()
                 .HasKey(c => new { c.itemId, c.orderId });
+
+            modelBuilder.Entity<PizzaComponents>()
+               .HasKey(c => new { c.componentId, c.pizzaId });
 
             base.OnModelCreating(modelBuilder);
         }

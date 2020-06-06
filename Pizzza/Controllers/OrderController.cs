@@ -12,8 +12,8 @@ namespace Pizzza.Controllers
     [ApiController]
     public class OrderController : Controller
     {
-        private IDataRepository<Order, long> _iRepo;
-        public OrderController(IDataRepository<Order, long> repo)
+        private IOrderDataRepository _iRepo;
+        public OrderController(IOrderDataRepository repo)
         {
             _iRepo = repo;
         }

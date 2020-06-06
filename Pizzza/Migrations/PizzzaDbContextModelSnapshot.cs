@@ -77,8 +77,6 @@ namespace Pizzza.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("description");
-
                     b.Property<string>("pizzaName");
 
                     b.Property<double>("price");
@@ -86,6 +84,25 @@ namespace Pizzza.Migrations
                     b.HasKey("pizzaId");
 
                     b.ToTable("Pizzas");
+                });
+
+            modelBuilder.Entity("Pizzza.Models.PizzaComponents", b =>
+                {
+                    b.Property<int>("componentId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("pizzaId");
+
+                    b.Property<string>("componentsName");
+
+                    b.Property<string>("quantity");
+
+                    b.HasKey("componentId", "pizzaId");
+
+                    b.HasIndex("pizzaId");
+
+                    b.ToTable("PizzaComponents");
                 });
 
             modelBuilder.Entity("Pizzza.Models.Place", b =>
@@ -142,6 +159,14 @@ namespace Pizzza.Migrations
 
                     b.HasOne("Pizzza.Models.Pizza", "pizza")
                         .WithMany()
+                        .HasForeignKey("pizzaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Pizzza.Models.PizzaComponents", b =>
+                {
+                    b.HasOne("Pizzza.Models.Pizza", "pizza")
+                        .WithMany("pizzaComponents")
                         .HasForeignKey("pizzaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

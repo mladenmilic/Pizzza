@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿ using Microsoft.AspNetCore.Mvc;
 using Pizzza.Models;
 using Pizzza.Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pizzza.Controllers
@@ -12,8 +10,8 @@ namespace Pizzza.Controllers
     [ApiController]
     public class PizzaController : Controller
     {
-        private IDataRepository<Pizza, long> _iRepo;
-        public PizzaController(IDataRepository<Pizza, long> repo)
+        private IPizzaDataRepository _iRepo;
+        public PizzaController(IPizzaDataRepository repo)
         {
             _iRepo = repo;
         }

@@ -69,10 +69,11 @@ namespace Pizzza
             services.AddDbContext<PizzzaDbContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:PizzaDB"]));
             services.AddMvc();
             services.AddScoped<IDataRepository, UserManager>();
-            services.AddScoped<IDataRepository<Place, long>, PlaceManager>();
-            services.AddScoped<IDataRepository<Pizza, long>, PizzaManager>();
-            services.AddScoped<IDataRepository<Order, long>, OrderManger>();
-            services.AddScoped<IDataRepository<OrderItem, long>, OrderItemManager>();
+            services.AddScoped<IPlaceDataRepository, PlaceManager>();
+            services.AddScoped<IPizzaDataRepository, PizzaManager>();
+            services.AddScoped<IOrderDataRepository, OrderManger>();
+            services.AddScoped<IOrderItemDataRepository, OrderItemManager>();
+            services.AddScoped<IPizzaComponentDataRepository, PizzaComponentsManager>();
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling =
@@ -83,6 +84,8 @@ namespace Pizzza
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors("MyPolicy");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -91,8 +94,6 @@ namespace Pizzza
             {
                 app.UseHsts();
             }
-
-            app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
             app.UseMvc();
         }

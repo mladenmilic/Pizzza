@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Pizzza.DataManager;
 using Pizzza.Models;
 using Pizzza.Repository;
 using System;
@@ -12,8 +13,8 @@ namespace Pizzza.Controllers
     [ApiController]
     public class PlaceController : Controller
     {
-        private IDataRepository<Place, long> _iRepo;
-        public PlaceController(IDataRepository<Place, long> repo)
+        private IPlaceDataRepository _iRepo;
+        public PlaceController (IPlaceDataRepository repo)
         {
             _iRepo = repo;
         }
@@ -37,11 +38,11 @@ namespace Pizzza.Controllers
         }
         [HttpGet]
         [Route("list-places/{placeId}")]
-        public async Task<IActionResult> GetUser([FromRoute] long placeId)
+        public async Task<IActionResult> GetPlace([FromRoute] long placeId)
         {
             try
             {
-                var response = await _iRepo.Get(placeId);
+                var response = await _iRepo.Get((int)placeId);
                 return Ok(response);
             }
             catch (Exception)

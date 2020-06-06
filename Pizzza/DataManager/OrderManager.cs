@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Pizzza.DataManager
 {
-    public class OrderManger : IDataRepository<Order, long>
+    public class OrderManger : IOrderDataRepository
     {
         PizzzaDbContext pizzaContext;
         public OrderManger(PizzzaDbContext pc)
@@ -114,11 +114,6 @@ namespace Pizzza.DataManager
                             .Include(u => u.user)
                             .Include(p => p.place).Where(o => o.date >= dateFrom && o.date <= dateTo).ToList();
             return getListOrders(orders);
-        }
-
-        public Task<List<Order>> GetPizzaByPrice(double? priceFrom, double? priceTo)
-        {
-            throw new NotImplementedException();
         }
     }
 }

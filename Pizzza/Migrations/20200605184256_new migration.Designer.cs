@@ -10,8 +10,8 @@ using Pizzza.Models;
 namespace Pizzza.Migrations
 {
     [DbContext(typeof(PizzzaDbContext))]
-    [Migration("20200123214029_PizzaDbContext")]
-    partial class PizzaDbContext
+    [Migration("20200605184256_new migration")]
+    partial class newmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,8 +79,6 @@ namespace Pizzza.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("description");
-
                     b.Property<string>("pizzaName");
 
                     b.Property<double>("price");
@@ -88,6 +86,25 @@ namespace Pizzza.Migrations
                     b.HasKey("pizzaId");
 
                     b.ToTable("Pizzas");
+                });
+
+            modelBuilder.Entity("Pizzza.Models.PizzaComponents", b =>
+                {
+                    b.Property<int>("componentId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("pizzaId");
+
+                    b.Property<string>("componentsName");
+
+                    b.Property<string>("quantity");
+
+                    b.HasKey("componentId", "pizzaId");
+
+                    b.HasIndex("pizzaId");
+
+                    b.ToTable("PizzaComponents");
                 });
 
             modelBuilder.Entity("Pizzza.Models.Place", b =>
@@ -144,6 +161,14 @@ namespace Pizzza.Migrations
 
                     b.HasOne("Pizzza.Models.Pizza", "pizza")
                         .WithMany()
+                        .HasForeignKey("pizzaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Pizzza.Models.PizzaComponents", b =>
+                {
+                    b.HasOne("Pizzza.Models.Pizza", "pizza")
+                        .WithMany("pizzaComponents")
                         .HasForeignKey("pizzaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

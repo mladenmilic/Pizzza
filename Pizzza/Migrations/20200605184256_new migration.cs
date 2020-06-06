@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Pizzza.Migrations
 {
-    public partial class PizzaDbContext : Migration
+    public partial class newmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,6 @@ namespace Pizzza.Migrations
                     pizzaId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     pizzaName = table.Column<string>(nullable: true),
-                    description = table.Column<string>(nullable: true),
                     price = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
@@ -50,6 +49,27 @@ namespace Pizzza.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.userId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PizzaComponents",
+                columns: table => new
+                {
+                    componentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    pizzaId = table.Column<int>(nullable: false),
+                    componentsName = table.Column<string>(nullable: true),
+                    quantity = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PizzaComponents", x => new { x.componentId, x.pizzaId });
+                    table.ForeignKey(
+                        name: "FK_PizzaComponents_Pizzas_pizzaId",
+                        column: x => x.pizzaId,
+                        principalTable: "Pizzas",
+                        principalColumn: "pizzaId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -130,12 +150,20 @@ namespace Pizzza.Migrations
                 name: "IX_Orders_userId",
                 table: "Orders",
                 column: "userId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PizzaComponents_pizzaId",
+                table: "PizzaComponents",
+                column: "pizzaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "PizzaComponents");
 
             migrationBuilder.DropTable(
                 name: "Orders");
