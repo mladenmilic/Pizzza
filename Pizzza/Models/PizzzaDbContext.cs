@@ -23,10 +23,30 @@ namespace Pizzza.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OrderItem>()
+                .HasOne<Order>(oi => oi.order)
+                .WithMany(o =>o.orderItems)
+                .HasForeignKey(c => c.orderId );
+
+            modelBuilder.Entity<OrderItem>()
                 .HasKey(c => new { c.itemId, c.orderId });
 
             modelBuilder.Entity<PizzaComponents>()
+                .HasOne<Pizza>(pc => pc.pizza).
+                WithMany(p => p.pizzaComponents).
+                HasForeignKey(pizzaC => pizzaC.pizzaId);
+
+            modelBuilder.Entity<PizzaComponents>()
                .HasKey(c => new { c.componentId, c.pizzaId });
+
+            modelBuilder.Entity<Order>()
+                .HasOne<User>(o => o.user)
+                .WithMany(u => u.orders)
+                .HasForeignKey(or => or.userId);
+
+            modelBuilder.Entity<Order>()
+                .HasOne<Place>(o => o.place)
+                .WithMany(p => p.orders)
+                .HasForeignKey(or => or.placezipCode);
 
             base.OnModelCreating(modelBuilder);
         }

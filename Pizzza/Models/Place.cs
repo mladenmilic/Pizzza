@@ -11,5 +11,7 @@ namespace Pizzza.Models
         [Key]
         public int zipCode { get; set; }
         public string township { get; set; }
+        public virtual ICollection<Order> orders { get; set; }
+
     }
 }
